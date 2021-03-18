@@ -1,5 +1,8 @@
 import {ActionType} from "./actions";
 import {Genre} from "../const";
+import {filterMoviesByGenre} from "../utils/movies";
+
+const MOVIES_CARD_COUNT_STEP = 8;
 
 const initialState = {
   movies: [],
@@ -12,10 +15,7 @@ const appStore = (state = initialState, action) => {
     case ActionType.CHANGE_GENRE: {
       const movies = state.movies.slice();
       const activeGenre = action.payload;
-      const filteredMovies = movies.filter((movie) => {
-        if (activeGenre === Genre.ALL_GENRES) {
-          return true;
-        }
+      const filteredMovies = filterMoviesByGenre(movies, activeGenre);
 
         return movie.genre === activeGenre;
       });
