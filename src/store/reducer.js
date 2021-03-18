@@ -8,6 +8,7 @@ const initialState = {
   movies: [],
   filteredMovies: [],
   activeGenre: Genre.ALL_GENRES,
+  movieCardsToShowCount: MOVIES_CARD_COUNT_STEP,
 };
 
 const appStore = (state = initialState, action) => {
@@ -17,13 +18,17 @@ const appStore = (state = initialState, action) => {
       const activeGenre = action.payload;
       const filteredMovies = filterMoviesByGenre(movies, activeGenre);
 
-        return movie.genre === activeGenre;
-      });
-
-      return {...state, activeGenre, filteredMovies};
+      const movieCardsToShowCount = MOVIES_CARD_COUNT_STEP;
+      return {...state, activeGenre, filteredMovies, movieCardsToShowCount};
     }
     case ActionType.LOAD_MOVIES: {
       return {...state, movies: action.payload, filteredMovies: action.payload};
+    }
+    case ActionType.INCREMENT_MOVIES_COUNT: {
+      const movieCardsToShowCount = state.movieCardsToShowCount;
+      const newMovieCardsToShowCount = movieCardsToShowCount + MOVIES_CARD_COUNT_STEP;
+
+      return {...state, movieCardsToShowCount: newMovieCardsToShowCount};
     }
     default:
       return state;
