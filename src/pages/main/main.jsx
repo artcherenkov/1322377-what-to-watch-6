@@ -10,6 +10,7 @@ import {getFilteredMovies, getActiveGenre, getMovieCardsToShowCount} from "../..
 
 import propTypes from './main.props';
 import {incrementMoviesCount} from "../../store/actions";
+import ShowMoreButton from "./components/show-more-button/show-more-button";
 
 const MainPage = (props) => {
   const {filteredMovies, activeGenre, movieCardsToShowCount, handleShowMoreClick} = props;
@@ -25,11 +26,7 @@ const MainPage = (props) => {
           <h2 className="catalog__title visually-hidden">Catalog</h2>
           <GenresList activeGenre={activeGenre} />
           <MoviesList movies={moviesToShow} />
-          {shouldShowButton && (
-            <div className="catalog__more">
-              <button className="catalog__button" type="button" onClick={handleShowMoreClick}>Show more</button>
-            </div>
-          )}
+          {shouldShowButton && <ShowMoreButton onClick={handleShowMoreClick} />}
         </section>
         <Footer />
       </div>
