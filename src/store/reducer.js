@@ -30,6 +30,10 @@ const appStore = (state = initialState, action) => {
 
       return {...state, movieCardsToShowCount: newMovieCardsToShowCount};
     }
+    case ActionType.RESET_MOVIES_COUNT: {
+      const movieCardsToShowCount = MOVIES_CARD_COUNT_STEP;
+      return {...state, movieCardsToShowCount};
+    }
     default:
       return state;
   }

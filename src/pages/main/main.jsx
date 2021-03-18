@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 
 import MoviePreview from "../../components/movie-preview/movie-preview";
@@ -9,14 +9,24 @@ import Footer from "../../components/footer/footer";
 import {getFilteredMovies, getActiveGenre, getMovieCardsToShowCount} from "../../store/selectors";
 
 import propTypes from './main.props';
-import {incrementMoviesCount} from "../../store/actions";
+import {incrementMoviesCount, resetMoviesCount} from "../../store/actions";
 import ShowMoreButton from "./components/show-more-button/show-more-button";
 
 const MainPage = (props) => {
-  const {filteredMovies, activeGenre, movieCardsToShowCount, handleShowMoreClick} = props;
+  const {
+    filteredMovies,
+    activeGenre,
+    movieCardsToShowCount,
+    handleShowMoreClick,
+    resetMoviesToShowCount
+  } = props;
 
   const moviesToShow = filteredMovies.slice(0, movieCardsToShowCount);
-  const shouldShowButton = filteredMovies.length >= movieCardsToShowCount;
+  const shouldShowButton = filteredMovies.length > movieCardsToShowCount;
+
+  useEffect(() => {
+    return resetMoviesToShowCount;
+  }, []);
 
   return (
     <>
@@ -45,6 +55,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   handleShowMoreClick() {
     dispatch(incrementMoviesCount());
+  },
+  resetMoviesToShowCount() {
+    dispatch(resetMoviesCount());
   }
 });
 

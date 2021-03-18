@@ -6,4 +6,5 @@ export default {
   activeGenre: PropTypes.string.isRequired,
   movieCardsToShowCount: PropTypes.number.isRequired,
   handleShowMoreClick: PropTypes.func.isRequired,
+  resetMoviesToShowCount: PropTypes.func.isRequired,
 };
