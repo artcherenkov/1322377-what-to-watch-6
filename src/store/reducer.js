@@ -1,5 +1,6 @@
 import {ActionType} from "./actions";
 import {Genre} from "../const";
+import {adaptMovieToClient} from "../core/adapter";
 
 const initialState = {
   movies: [],
@@ -12,7 +13,8 @@ const appStore = (state = initialState, action) => {
       return {...state, activeGenre: action.payload};
     }
     case ActionType.LOAD_MOVIES: {
-      return {...state, movies: action.payload};
+      const movies = action.payload.map((movie) => adaptMovieToClient(movie));
+      return {...state, movies};
     }
     default:
       return state;

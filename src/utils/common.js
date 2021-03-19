@@ -41,3 +41,28 @@ export const getDurationString = (durationInMinutes) => {
   }
   return durationString;
 };
+
+export const convertSnakeToCamel = (str) => str.replace(/_(.)/g, (g) => g[1].toUpperCase());
+export const renameKeysSnakeToCamel = (obj) => {
+  const processVal = (val) => {
+    if (typeof val !== `object`) {
+      return val;
+    }
+
+    if (Array.isArray(val)) {
+      if (val.every((item) => typeof item === `string`)) {
+        return val;
+      }
+      return val.map(renameKeysSnakeToCamel);
+    }
+
+    return renameKeysSnakeToCamel(val);
+  };
+
+  return Object.fromEntries(
+      Object.entries(obj)
+      .map(([key, val]) => {
+        return [convertSnakeToCamel(key), processVal(val)];
+      }),
+  );
+};

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import reviewProp from './review.prop';
 
 export default PropTypes.shape({
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   posterImage: PropTypes.string.isRequired,
   videoLink: PropTypes.string.isRequired,
