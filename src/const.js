@@ -40,3 +40,7 @@ export const FilmMark = {
     min: 10,
   },
 };
+
+export const APIRoute = {
+  MOVIES: `/films`
+};

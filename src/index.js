@@ -10,11 +10,8 @@ import {createAPI} from "./services/api";
 import {appStore} from "./store/reducer";
 
 import App from "./app/app";
-import {generateFilms} from "./mock/movie";
-import {loadMovies} from "./store/actions";
+import {fetchMoviesList} from "./store/api-actions";
 
-const FILMS_COUNT = 20;
-const movies = generateFilms(FILMS_COUNT);
 const api = createAPI();
 
 const store = createStore(
@@ -24,11 +21,11 @@ const store = createStore(
     )
 );
 
-Promise.resolve(store.dispatch(loadMovies(movies)))
+store.dispatch(fetchMoviesList())
   .then(() => {
     ReactDOM.render(
         <Provider store={store}>
-          <App movies={movies} />
+          <App />
         </Provider>,
         document.getElementById(`root`),
     );

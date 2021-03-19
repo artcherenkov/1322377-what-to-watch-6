@@ -1,4 +1,5 @@
 import React from 'react';
+import {shallowEqual, useSelector} from "react-redux";
 import {Switch, Route, BrowserRouter} from 'react-router-dom';
 
 import MainPage from "../pages/main/main";
@@ -9,11 +10,13 @@ import AddReviewPage from "../pages/add-review/add-review";
 import PlayerPage from "../pages/player/player";
 import NotFoundPage from "../pages/not-found-page/not-found-page";
 
-import propTypes from './app.props';
+import {getMovies} from "../store/selectors";
 
 const SAME_MOVIES_COUNT = 4;
 
-const App = ({movies}) => {
+const App = () => {
+  const movies = useSelector(getMovies, shallowEqual);
+
   return (
     <BrowserRouter>
       <Switch>
@@ -42,7 +45,5 @@ const App = ({movies}) => {
     </BrowserRouter>
   );
 };
-
-App.propTypes = propTypes;
 
 export default App;
