@@ -1,11 +1,9 @@
 import {Genre} from "../const";
 
 export function filterMoviesByGenre(movies, activeGenre) {
-  return movies.filter((movie) => {
-    if (activeGenre === Genre.ALL_GENRES) {
-      return true;
-    }
+  if (activeGenre === Genre.ALL_GENRES) {
+    return movies;
+  }
 
-    return movie.genre === activeGenre;
-  });
+  return movies.filter((movie) => movie.genre === activeGenre);
 }
