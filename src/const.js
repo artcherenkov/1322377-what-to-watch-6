@@ -1,4 +1,5 @@
 export const MAX_STARRING_COUNT = 4;
+export const MOVIES_CARD_COUNT_STEP = 8;
 
 export const Genre = {
   ALL_GENRES: `All genres`,
