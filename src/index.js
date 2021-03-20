@@ -11,13 +11,9 @@ import {appStore} from "./store/reducer";
 
 import App from "./app/app";
 import {fetchMoviesList, login} from "./store/api-actions";
-import NotFoundPage from "./pages/not-found-page/not-found-page";
 
 function onUnauthorized() {
-  ReactDOM.render(
-      <NotFoundPage title="Вы не авторизованы" />,
-      document.getElementById(`root`),
-  );
+  console.log(`Вы не авторизованы`);
 }
 
 const api = createAPI(onUnauthorized);
@@ -29,9 +25,10 @@ const store = createStore(
     )
 );
 
+store.dispatch(login());
+
 Promise.all([
   store.dispatch(fetchMoviesList()),
-  store.dispatch(login())
 ])
   .then(() => {
     ReactDOM.render(
