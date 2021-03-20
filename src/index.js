@@ -10,9 +10,17 @@ import {createAPI} from "./services/api";
 import {appStore} from "./store/reducer";
 
 import App from "./app/app";
-import {fetchMoviesList} from "./store/api-actions";
+import {fetchMoviesList, login} from "./store/api-actions";
+import NotFoundPage from "./pages/not-found-page/not-found-page";
 
-const api = createAPI();
+function onUnauthorized() {
+  ReactDOM.render(
+      <NotFoundPage title="Вы не авторизованы" />,
+      document.getElementById(`root`),
+  );
+}
+
+const api = createAPI(onUnauthorized);
 
 const store = createStore(
     appStore,
@@ -21,7 +29,10 @@ const store = createStore(
     )
 );
 
-store.dispatch(fetchMoviesList())
+Promise.all([
+  store.dispatch(fetchMoviesList()),
+  store.dispatch(login())
+])
   .then(() => {
     ReactDOM.render(
         <Provider store={store}>
