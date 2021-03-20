@@ -1,8 +1,35 @@
 import React from 'react';
 import Logo from "../../components/logo/logo";
 import Footer from "../../components/footer/footer";
+import {useDispatch} from "react-redux";
+import {login} from "../../store/api-actions";
+import {useHistory} from 'react-router-dom';
+
+function getFormValues(form) {
+  const formData = new FormData(form);
+  const formValues = {};
+  for (let [name, value] of formData) {
+    formValues[name.slice(5)] = value;
+  }
+  return formValues;
+}
 
 const SignInPage = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    const formValues = getFormValues(evt.target);
+
+    const user = {
+      email: formValues[`email`],
+      password: formValues[`password`]
+    };
+
+    dispatch(login(user)).then(() => history.push(`/`));
+  }
+
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
@@ -10,12 +37,13 @@ const SignInPage = () => {
         <h1 className="page-title user-page__title">Sign in</h1>
       </header>
       <div className="sign-in user-page__content">
-        <form action="#" className="sign-in__form">
+        <form className="sign-in__form" onSubmit={handleSubmit}>
           <div className="sign-in__fields">
             <div className="sign-in__field">
               <input
                 className="sign-in__input"
                 type="email"
+                required
                 placeholder="Email address"
                 name="user-email"
                 id="user-email"
@@ -34,6 +62,7 @@ const SignInPage = () => {
                 placeholder="Password"
                 name="user-password"
                 id="user-password"
+                required
               />
               <label
                 className="sign-in__label visually-hidden"
