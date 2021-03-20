@@ -12,9 +12,7 @@ import {appStore} from "./store/reducer";
 import App from "./app/app";
 import {fetchMoviesList, checkAuthStatus} from "./store/api-actions";
 
-function onUnauthorized() {
-  console.log(`Вы не авторизованы`);
-}
+function onUnauthorized() {}
 
 const api = createAPI(onUnauthorized);
 
