@@ -11,6 +11,7 @@ import PlayerPage from "../pages/player/player";
 import NotFoundPage from "../pages/not-found-page/not-found-page";
 
 import {getMovies} from "../store/selectors";
+import PrivateRoute from "../components/private-route/private-route";
 
 const SAME_MOVIES_COUNT = 4;
 
@@ -26,9 +27,11 @@ const App = () => {
         <Route exact path="/login">
           <SignInPage />
         </Route>
-        <Route exact path="/mylist">
-          <MyListPage movies={movies} />
-        </Route>
+        <PrivateRoute
+          exact
+          path="/mylist"
+          render={() => <MyListPage movies={movies} />}
+        />
         <Route exact path="/films/:id">
           <FilmPage movies={movies} sameMovies={movies.slice(0, SAME_MOVIES_COUNT)} />
         </Route>

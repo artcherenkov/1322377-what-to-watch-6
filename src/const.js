@@ -42,5 +42,11 @@ export const FilmMark = {
 };
 
 export const APIRoute = {
-  MOVIES: `/films`
+  MOVIES: `/films`,
+  LOGIN: `/login`
+};
+
+export const AuthorizationStatus = {
+  AUTH: true,
+  NOT_AUTH: false,
 };

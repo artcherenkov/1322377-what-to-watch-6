@@ -1,10 +1,12 @@
 import {ActionType} from "./actions";
-import {Genre} from "../const";
-import {adaptMovieToClient} from "../core/adapter";
+import {AuthorizationStatus, Genre} from "../const";
+import {adaptMovieToClient, adaptUserInfoToClient} from "../core/adapter";
 
 const initialState = {
   movies: [],
   activeGenre: Genre.ALL_GENRES,
+  authStatus: AuthorizationStatus.NOT_AUTH,
+  authInfo: null,
 };
 
 const appStore = (state = initialState, action) => {
@@ -15,6 +17,9 @@ const appStore = (state = initialState, action) => {
     case ActionType.LOAD_MOVIES: {
       const movies = action.payload.map((movie) => adaptMovieToClient(movie));
       return {...state, movies};
+    }
+    case ActionType.LOAD_USER: {
+      return {...state, authStatus: AuthorizationStatus.AUTH, authInfo: adaptUserInfoToClient(action.payload)};
     }
     default:
       return state;

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Logo from "../../components/logo/logo";
+import UserBlock from "../../components/user-block/user-block";
 import ReviewForm from "../../components/review-form/review-form";
 
 import propTypes from './add-review.props';
@@ -26,11 +27,7 @@ const AddReviewPage = ({movie}) => {
               </li>
             </ul>
           </nav>
-          <div className="user-block">
-            <div className="user-block__avatar">
-              <img src="img/avatar.jpg" alt="User avatar" width={63} height={63} />
-            </div>
-          </div>
+          <UserBlock />
         </header>
         <div className="movie-card__poster movie-card__poster--small">
           <img src={posterImage} alt="The Grand Budapest Hotel poster" width={218} height={327} />

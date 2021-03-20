@@ -10,9 +10,11 @@ import {createAPI} from "./services/api";
 import {appStore} from "./store/reducer";
 
 import App from "./app/app";
-import {fetchMoviesList} from "./store/api-actions";
+import {fetchMoviesList, checkAuthStatus} from "./store/api-actions";
 
-const api = createAPI();
+function onUnauthorized() {}
+
+const api = createAPI(onUnauthorized);
 
 const store = createStore(
     appStore,
@@ -21,7 +23,11 @@ const store = createStore(
     )
 );
 
-store.dispatch(fetchMoviesList())
+store.dispatch(checkAuthStatus());
+
+Promise.all([
+  store.dispatch(fetchMoviesList()),
+])
   .then(() => {
     ReactDOM.render(
         <Provider store={store}>
