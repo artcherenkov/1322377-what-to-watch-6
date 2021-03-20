@@ -5,6 +5,7 @@ import moment from "moment";
 import Footer from "../../components/footer/footer";
 import MoviesList from "../../components/movies-list/movies-list";
 import Logo from "../../components/logo/logo";
+import UserBlock from "../../components/user-block/user-block";
 import MovieTabs from "../../components/movie-tabs/movie-tabs";
 
 import MovieTabOverview from "../../components/movie-tabs/components/movie-tab-overview/movie-tab-overview";
@@ -51,11 +52,7 @@ const FilmPage = ({movies, sameMovies}) => {
           <h1 className="visually-hidden">WTW</h1>
           <header className="page-header movie-card__head">
             <Logo />
-            <div className="user-block">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width={63} height={63} />
-              </div>
-            </div>
+            <UserBlock />
           </header>
           <div className="movie-card__wrap">
             <div className="movie-card__desc">
