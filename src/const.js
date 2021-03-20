@@ -1,4 +1,5 @@
 export const MAX_STARRING_COUNT = 4;
+export const MOVIES_CARD_COUNT_STEP = 8;
 
 export const Genre = {
   ALL_GENRES: `All genres`,
@@ -38,4 +39,8 @@ export const FilmMark = {
     title: `Awesome`,
     min: 10,
   },
+};
+
+export const APIRoute = {
+  MOVIES: `/films`
 };

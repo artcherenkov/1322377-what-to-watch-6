@@ -28,17 +28,18 @@ function useScrollToTop(...dependencies) {
 
 const FilmPage = ({movies, sameMovies}) => {
   const params = useParams();
-  const movie = movies.find((movieItem) => movieItem.id === params.id);
-  const {posterImage, name, genre, releaseDate} = movie;
+  const movie = movies.find((movieItem) => movieItem.id === +params.id);
 
   const [movieTab, setMovieTab] = useState(MovieTab.OVERVIEW);
-  const handleMovieTabChange = (newTab) => setMovieTab(newTab);
 
   useScrollToTop(params.id);
 
   if (!movie) {
     return <NotFoundPage />;
   }
+
+  const {posterImage, name, genre, releaseDate} = movie;
+  const handleMovieTabChange = (newTab) => setMovieTab(newTab);
 
   return (
     <>
