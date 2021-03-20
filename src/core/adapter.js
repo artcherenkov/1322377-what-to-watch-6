@@ -8,3 +8,7 @@ export function adaptMovieToClient(movie) {
 
   return adaptedMovie;
 }
+
+export function adaptUserInfoToClient(userInfo) {
+  return renameKeysSnakeToCamel(userInfo);
+}

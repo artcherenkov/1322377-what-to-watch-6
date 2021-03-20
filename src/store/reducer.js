@@ -1,6 +1,6 @@
 import {ActionType} from "./actions";
 import {AuthorizationStatus, Genre} from "../const";
-import {adaptMovieToClient} from "../core/adapter";
+import {adaptMovieToClient, adaptUserInfoToClient} from "../core/adapter";
 
 const initialState = {
   movies: [],
@@ -19,7 +19,7 @@ const appStore = (state = initialState, action) => {
       return {...state, movies};
     }
     case ActionType.LOAD_USER: {
-      return {...state, authStatus: AuthorizationStatus.AUTH, authInfo: action.payload};
+      return {...state, authStatus: AuthorizationStatus.AUTH, authInfo: adaptUserInfoToClient(action.payload)};
     }
     default:
       return state;
