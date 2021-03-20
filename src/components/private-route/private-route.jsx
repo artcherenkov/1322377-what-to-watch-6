@@ -8,7 +8,7 @@ import propTypes from './private-route.props';
 
 const PrivateRoute = (props) => {
   const {render, path, exact} = props;
-  const authorizationStatus = useSelector(getAuthStatus, shallowEqual);
+  const authStatus = useSelector(getAuthStatus, shallowEqual);
 
   return (
     <Route
@@ -16,7 +16,7 @@ const PrivateRoute = (props) => {
       exact={exact}
       render={(routeProps) => {
         return (
-          authorizationStatus === AuthorizationStatus.AUTH
+          authStatus === AuthorizationStatus.AUTH
             ? render(routeProps)
             : <Redirect to={`/login`} />
         );

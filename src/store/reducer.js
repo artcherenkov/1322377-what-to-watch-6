@@ -5,7 +5,7 @@ import {adaptMovieToClient} from "../core/adapter";
 const initialState = {
   movies: [],
   activeGenre: Genre.ALL_GENRES,
-  isAuth: AuthorizationStatus.NOT_AUTH,
+  authStatus: AuthorizationStatus.NOT_AUTH,
 };
 
 const appStore = (state = initialState, action) => {
@@ -18,7 +18,7 @@ const appStore = (state = initialState, action) => {
       return {...state, movies};
     }
     case ActionType.CHANGE_AUTH_STATUS: {
-      return {...state, isAuth: action.payload};
+      return {...state, authStatus: action.payload};
     }
     default:
       return state;
