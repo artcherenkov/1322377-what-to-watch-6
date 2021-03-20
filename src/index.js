@@ -10,7 +10,7 @@ import {createAPI} from "./services/api";
 import {appStore} from "./store/reducer";
 
 import App from "./app/app";
-import {fetchMoviesList, login} from "./store/api-actions";
+import {fetchMoviesList, checkAuthStatus} from "./store/api-actions";
 
 function onUnauthorized() {
   console.log(`Вы не авторизованы`);
@@ -25,7 +25,7 @@ const store = createStore(
     )
 );
 
-store.dispatch(login());
+store.dispatch(checkAuthStatus());
 
 Promise.all([
   store.dispatch(fetchMoviesList()),

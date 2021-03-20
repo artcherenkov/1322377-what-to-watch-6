@@ -6,6 +6,7 @@ const initialState = {
   movies: [],
   activeGenre: Genre.ALL_GENRES,
   authStatus: AuthorizationStatus.NOT_AUTH,
+  authInfo: null,
 };
 
 const appStore = (state = initialState, action) => {
@@ -17,8 +18,8 @@ const appStore = (state = initialState, action) => {
       const movies = action.payload.map((movie) => adaptMovieToClient(movie));
       return {...state, movies};
     }
-    case ActionType.CHANGE_AUTH_STATUS: {
-      return {...state, authStatus: action.payload};
+    case ActionType.LOAD_USER: {
+      return {...state, authStatus: AuthorizationStatus.AUTH, authInfo: action.payload};
     }
     default:
       return state;

@@ -1,7 +1,7 @@
 export const ActionType = {
   LOAD_MOVIES: `LOAD_MOVIES`,
   CHANGE_GENRE: `CHANGE_GENRE`,
-  CHANGE_AUTH_STATUS: `CHANGE_AUTH_STATUS`
+  LOAD_USER: `LOAD_USER`
 };
 
 export const changeGenre = (genre) => ({
@@ -14,7 +14,7 @@ export const loadMovies = (movies) => ({
   payload: movies,
 });
 
-export const changeAuthStatus = (authStatus) => ({
-  type: ActionType.CHANGE_AUTH_STATUS,
-  payload: authStatus,
+export const loadUser = (authInfo) => ({
+  type: ActionType.LOAD_USER,
+  payload: authInfo,
 });
