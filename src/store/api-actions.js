@@ -1,4 +1,4 @@
-import {loadMovies, loadUser} from "./actions";
+import {loadMovies, loadMovie, loadUser} from "./actions";
 import {APIRoute} from "../const";
 
 export const fetchMoviesList = () => (dispatch, _getState, api) => (
