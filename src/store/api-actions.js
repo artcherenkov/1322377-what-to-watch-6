@@ -6,6 +6,11 @@ export const fetchMoviesList = () => (dispatch, _getState, api) => (
     .then(({data}) => dispatch(loadMovies(data)))
 );
 
+export const fetchMovieById = (id) => (dispatch, _getState, api) => (
+  api.get(`${APIRoute.MOVIES}/${id}`)
+    .then(({data}) => dispatch(loadMovie(data)))
+);
+
 export const checkAuthStatus = () => (dispatch, _getState, api) => (
   api.get(APIRoute.LOGIN)
     .then(({data}) => dispatch(loadUser(data)))
