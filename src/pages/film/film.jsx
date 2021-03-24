@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {useDispatch} from "react-redux";
 import {useParams} from 'react-router-dom';
 import moment from "moment";
 
@@ -12,8 +13,11 @@ import MovieTabOverview from "../../components/movie-tabs/components/movie-tab-o
 import MovieTabDetails from "../../components/movie-tabs/components/movie-tab-details/movie-tab-details";
 import MovieTabReviews from "../../components/movie-tabs/components/movie-tab-reviews/movie-tab-reviews";
 import NotFoundPage from "../not-found-page/not-found-page";
+import LoadingSpinner from "../../components/loading-spinner/loading-spinner";
 
 import propTypes from './film.props';
+import {fetchMovieById} from "../../store/api-actions";
+import {adaptMovieToClient} from "../../core/adapter";
 
 export const MovieTab = {
   OVERVIEW: `Overview`,
@@ -27,15 +31,31 @@ function useScrollToTop(...dependencies) {
   }, dependencies);
 }
 
-const FilmPage = ({movies, sameMovies}) => {
+const FilmPage = ({sameMovies}) => {
   const params = useParams();
-  const movie = movies.find((movieItem) => movieItem.id === +params.id);
+  const dispatch = useDispatch();
+  const movieId = params.id;
 
   const [movieTab, setMovieTab] = useState(MovieTab.OVERVIEW);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [movie, setMovie] = useState(null);
+
+  useEffect(() => {
+    setIsLoading(true);
+    dispatch(fetchMovieById(movieId))
+      .then((data) => setMovie(adaptMovieToClient(data.payload)))
+      .catch(() => setIsError(true))
+      .finally(() => setIsLoading(false));
+  }, [movieId]);
 
   useScrollToTop(params.id);
 
-  if (!movie) {
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (isError || !movie) {
     return <NotFoundPage />;
   }
 
