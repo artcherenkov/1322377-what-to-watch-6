@@ -7,15 +7,35 @@ import Review from "./components/review/review";
 import propTypes from './movie-tab-reviews.props';
 
 function splitReviews(reviews) {
+  if (!reviews) {
+    return null;
+  }
+
+  if (!reviews.length) {
+    return [];
+  }
+
   const middle = Math.ceil(reviews.length / 2);
 
   return [reviews.slice(0, middle), reviews.slice(middle)];
 }
 
 const MovieTabReviews = (props) => {
-  const {reviews} = props;
+  const {reviews, isLoading} = props;
 
   const dividedReviews = splitReviews(reviews);
+
+  if (isLoading) {
+    return <p>Загрузка...</p>;
+  }
+
+  if (dividedReviews && !dividedReviews.length) {
+    return <h2>Комментариев пока нет</h2>;
+  }
+
+  if (!dividedReviews) {
+    return <h2>Произошла ошибка загрузки</h2>;
+  }
 
   return (
     <>

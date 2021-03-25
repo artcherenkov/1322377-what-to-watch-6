@@ -11,6 +11,10 @@ export const fetchMovieById = (id) => (dispatch, _getState, api) => (
     .then(({data}) => dispatch(loadMovie(data)))
 );
 
+export const fetchReviewsByMovieId = (movieId) => (dispatch, _getState, api) => (
+  api.get(`${APIRoute.COMMENTS}/${movieId}`)
+);
+
 export const checkAuthStatus = () => (dispatch, _getState, api) => (
   api.get(APIRoute.LOGIN)
     .then(({data}) => dispatch(loadUser(data)))
