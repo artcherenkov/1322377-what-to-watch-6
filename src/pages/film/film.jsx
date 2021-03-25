@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {useDispatch} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {Link, useParams} from 'react-router-dom';
 import moment from "moment";
 
@@ -18,6 +18,7 @@ import LoadingSpinner from "../../components/loading-spinner/loading-spinner";
 import propTypes from './film.props';
 import {fetchMovieById, fetchReviewsByMovieId} from "../../store/api-actions";
 import {adaptMovieToClient} from "../../core/adapter";
+import {getAuthInfo} from "../../store/selectors";
 
 export const MovieTab = {
   OVERVIEW: `Overview`,
@@ -34,6 +35,7 @@ function useScrollToTop(...dependencies) {
 const FilmPage = ({sameMovies}) => {
   const params = useParams();
   const dispatch = useDispatch();
+  const authInfo = useSelector(getAuthInfo, shallowEqual);
   const movieId = params.id;
 
   const [movieTab, setMovieTab] = useState(MovieTab.OVERVIEW);
@@ -106,7 +108,7 @@ const FilmPage = ({sameMovies}) => {
                   </svg>
                   <span>My list</span>
                 </button>
-                <Link to={`/films/${movieId}/review`} className="btn movie-card__button">Add review</Link>
+                {authInfo && <Link to={`/films/${movieId}/review`} className="btn movie-card__button">Add review</Link>}
               </div>
             </div>
           </div>
