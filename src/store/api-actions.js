@@ -24,3 +24,7 @@ export const login = (user) => (dispatch, _getState, api) => (
   api.post(APIRoute.LOGIN, user)
     .then(({data}) => dispatch(loadUser(data)))
 );
+
+export const postReview = (review, movieId) => (dispatch, _getState, api) => (
+  api.post(`${APIRoute.COMMENTS}/${movieId}`, review)
+);

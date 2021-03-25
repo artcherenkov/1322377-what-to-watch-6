@@ -12,3 +12,11 @@ export function adaptMovieToClient(movie) {
 export function adaptUserInfoToClient(userInfo) {
   return renameKeysSnakeToCamel(userInfo);
 }
+
+export function adaptReviewToServer(review) {
+  const adaptedReview = {...review, comment: review.reviewText};
+
+  delete adaptedReview.reviewText;
+
+  return adaptedReview;
+}

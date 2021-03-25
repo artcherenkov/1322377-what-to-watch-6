@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch} from "react-redux";
-import {useParams} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import moment from "moment";
 
 import Footer from "../../components/footer/footer";
@@ -106,7 +106,7 @@ const FilmPage = ({sameMovies}) => {
                   </svg>
                   <span>My list</span>
                 </button>
-                <a href="add-review.html" className="btn movie-card__button">Add review</a>
+                <Link to={`/films/${movieId}/review`} className="btn movie-card__button">Add review</Link>
               </div>
             </div>
           </div>
