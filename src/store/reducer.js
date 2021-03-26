@@ -18,6 +18,10 @@ const appStore = (state = initialState, action) => {
       const movies = action.payload.map((movie) => adaptMovieToClient(movie));
       return {...state, movies};
     }
+    case ActionType.LOAD_MOVIE: {
+      const movie = adaptMovieToClient(action.payload);
+      return {...state, movies: [...state.movies, movie]};
+    }
     case ActionType.LOAD_USER: {
       return {...state, authStatus: AuthorizationStatus.AUTH, authInfo: adaptUserInfoToClient(action.payload)};
     }

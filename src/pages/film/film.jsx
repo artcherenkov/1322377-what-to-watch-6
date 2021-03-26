@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {useParams} from 'react-router-dom';
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
+import {Link, useParams} from 'react-router-dom';
 import moment from "moment";
 
 import Footer from "../../components/footer/footer";
@@ -12,8 +13,12 @@ import MovieTabOverview from "../../components/movie-tabs/components/movie-tab-o
 import MovieTabDetails from "../../components/movie-tabs/components/movie-tab-details/movie-tab-details";
 import MovieTabReviews from "../../components/movie-tabs/components/movie-tab-reviews/movie-tab-reviews";
 import NotFoundPage from "../not-found-page/not-found-page";
+import LoadingSpinner from "../../components/loading-spinner/loading-spinner";
 
 import propTypes from './film.props';
+import {fetchMovieById, fetchReviewsByMovieId} from "../../store/api-actions";
+import {adaptMovieToClient} from "../../core/adapter";
+import {getAuthInfo} from "../../store/selectors";
 
 export const MovieTab = {
   OVERVIEW: `Overview`,
@@ -27,15 +32,44 @@ function useScrollToTop(...dependencies) {
   }, dependencies);
 }
 
-const FilmPage = ({movies, sameMovies}) => {
+const FilmPage = ({sameMovies}) => {
   const params = useParams();
-  const movie = movies.find((movieItem) => movieItem.id === +params.id);
+  const dispatch = useDispatch();
+  const authInfo = useSelector(getAuthInfo, shallowEqual);
+  const movieId = params.id;
 
   const [movieTab, setMovieTab] = useState(MovieTab.OVERVIEW);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isReviewsLoading, setIsReviewsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [movie, setMovie] = useState(null);
+  const [reviews, setReviews] = useState(null);
+
+  useEffect(() => {
+    setIsLoading(true);
+    dispatch(fetchMovieById(movieId))
+      .then((data) => setMovie(adaptMovieToClient(data.payload)))
+      .catch(() => setIsError(true))
+      .finally(() => setIsLoading(false));
+  }, [movieId]);
+
+  useEffect(() => {
+    if (movieTab === MovieTab.REVIEWS) {
+      setIsReviewsLoading(true);
+      dispatch(fetchReviewsByMovieId(movieId))
+        .then(({data}) => setReviews(data))
+        .catch(() => setIsError(true))
+        .finally(() => setIsReviewsLoading(false));
+    }
+  }, [movieId, movieTab]);
 
   useScrollToTop(params.id);
 
-  if (!movie) {
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (isError || !movie) {
     return <NotFoundPage />;
   }
 
@@ -74,7 +108,7 @@ const FilmPage = ({movies, sameMovies}) => {
                   </svg>
                   <span>My list</span>
                 </button>
-                <a href="add-review.html" className="btn movie-card__button">Add review</a>
+                {authInfo && <Link to={`/films/${movieId}/review`} className="btn movie-card__button">Add review</Link>}
               </div>
             </div>
           </div>
@@ -87,7 +121,7 @@ const FilmPage = ({movies, sameMovies}) => {
             <MovieTabs activeTab={movieTab} onChange={handleMovieTabChange}>
               {movieTab === MovieTab.OVERVIEW && <MovieTabOverview movie={movie} />}
               {movieTab === MovieTab.DETAILS && <MovieTabDetails movie={movie} />}
-              {movieTab === MovieTab.REVIEWS && <MovieTabReviews reviews={movie._reviews} />}
+              {movieTab === MovieTab.REVIEWS && <MovieTabReviews reviews={reviews} isLoading={isReviewsLoading} />}
             </MovieTabs>
           </div>
         </div>

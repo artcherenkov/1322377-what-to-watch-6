@@ -1,15 +1,27 @@
 import React, {useState} from 'react';
 import {convertKebabToCamel, count} from "../../utils/common";
 import RatingStar from "./components/rating-star/rating-star";
+import {connect} from "react-redux";
+import {postReview as postReviewAction} from "../../store/api-actions";
+import {adaptReviewToServer} from "../../core/adapter";
+import {useParams} from "react-router-dom";
+
+import propTypes from './review-form.props';
 
 const MAX_RATING = 10;
 
-const ReviewForm = () => {
+const ReviewForm = (props) => {
+  const {postReview} = props;
+  const params = useParams();
+  const movieId = params.id;
+
   const initialFormState = {
     rating: `8`,
     reviewText: ``,
   };
+
   const [formState, setFormState] = useState(initialFormState);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onChange = (evt) => {
     const {name, value} = evt.target;
@@ -19,9 +31,19 @@ const ReviewForm = () => {
     }));
   };
 
+  const onSubmit = (evt) => {
+    evt.preventDefault();
+    setIsLoading(true);
+    postReview(formState, movieId).then(() => {
+      setIsLoading(false);
+      setFormState(initialFormState);
+      evt.target.reset();
+    });
+  };
+
   return (
     <div className="add-review">
-      <form className="add-review__form" onChange={onChange}>
+      <form className="add-review__form" onChange={onChange} onSubmit={onSubmit}>
         <div className="rating">
           <div className="rating__stars">
             {count(MAX_RATING).map((i) =>
@@ -34,9 +56,9 @@ const ReviewForm = () => {
           </div>
         </div>
         <div className="add-review__text">
-          <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" />
+          <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" value={formState.reviewText} />
           <div className="add-review__submit">
-            <button className="add-review__btn" type="submit">Post</button>
+            {isLoading ? <span>Загрузка...</span> : <button className="add-review__btn" type="submit">Post</button>}
           </div>
         </div>
       </form>
@@ -44,4 +66,13 @@ const ReviewForm = () => {
   );
 };
 
-export default ReviewForm;
+const mapDispatchToProps = (dispatch) => ({
+  postReview(review, movieId) {
+    const adaptedReview = adaptReviewToServer(review);
+    return dispatch(postReviewAction(adaptedReview, movieId));
+  }
+});
+
+ReviewForm.propTypes = propTypes;
+
+export default connect(null, mapDispatchToProps)(ReviewForm);
