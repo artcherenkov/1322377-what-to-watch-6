@@ -5,22 +5,22 @@ export const ActionType = {
   LOAD_USER: `LOAD_USER`
 };
 
-export const changeGenre = (genre) => ({
+export const changeGenre = (payload) => ({
   type: ActionType.CHANGE_GENRE,
-  payload: genre,
+  payload,
 });
 
-export const loadMovies = (movies) => ({
+export const loadMovies = (payload) => ({
   type: ActionType.LOAD_MOVIES,
-  payload: movies,
+  payload,
 });
 
-export const loadMovie = (movie) => ({
+export const loadMovie = (payload) => ({
   type: ActionType.LOAD_MOVIE,
-  payload: movie,
+  payload,
 });
 
-export const loadUser = (authInfo) => ({
+export const loadUser = (payload) => ({
   type: ActionType.LOAD_USER,
-  payload: authInfo,
+  payload,
 });
