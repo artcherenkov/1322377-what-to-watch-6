@@ -18,7 +18,7 @@ import LoadingSpinner from "../../components/loading-spinner/loading-spinner";
 import propTypes from './film.props';
 import {fetchMovieById} from "../../store/api-actions";
 import {adaptMovieToClient} from "../../core/adapter";
-import {getAuthInfo} from "../../store/selectors";
+import {getAuthInfo, getMovies} from "../../store/selectors";
 
 export const MovieTab = {
   OVERVIEW: `Overview`,
@@ -36,6 +36,7 @@ const FilmPage = ({sameMovies}) => {
   const params = useParams();
   const dispatch = useDispatch();
   const authInfo = useSelector(getAuthInfo, shallowEqual);
+  const movies = useSelector(getMovies, shallowEqual);
   const movieId = params.id;
 
   const [movieTab, setMovieTab] = useState(MovieTab.OVERVIEW);
@@ -44,11 +45,16 @@ const FilmPage = ({sameMovies}) => {
   const [movie, setMovie] = useState(null);
 
   useEffect(() => {
-    setIsLoading(true);
-    dispatch(fetchMovieById(movieId))
-      .then((data) => setMovie(adaptMovieToClient(data.payload)))
-      .catch(() => setIsError(true))
-      .finally(() => setIsLoading(false));
+    const foundMovie = movies.find((m) => m.id === Number(movieId));
+    if (foundMovie) {
+      setMovie(foundMovie);
+    } else {
+      setIsLoading(true);
+      dispatch(fetchMovieById(movieId))
+        .then((data) => setMovie(adaptMovieToClient(data.payload)))
+        .catch(() => setIsError(true))
+        .finally(() => setIsLoading(false));
+    }
   }, [movieId]);
 
   useScrollToTop(params.id);
