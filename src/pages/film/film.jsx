@@ -16,9 +16,9 @@ import NotFoundPage from "../not-found-page/not-found-page";
 import LoadingSpinner from "../../components/loading-spinner/loading-spinner";
 
 import propTypes from './film.props';
-import {fetchMovieById, fetchReviewsByMovieId} from "../../store/api-actions";
+import {fetchMovieById} from "../../store/api-actions";
 import {adaptMovieToClient} from "../../core/adapter";
-import {getAuthInfo} from "../../store/selectors";
+import {getAuthInfo, getMovies} from "../../store/selectors";
 
 export const MovieTab = {
   OVERVIEW: `Overview`,
@@ -36,32 +36,26 @@ const FilmPage = ({sameMovies}) => {
   const params = useParams();
   const dispatch = useDispatch();
   const authInfo = useSelector(getAuthInfo, shallowEqual);
+  const movies = useSelector(getMovies, shallowEqual);
   const movieId = params.id;
 
   const [movieTab, setMovieTab] = useState(MovieTab.OVERVIEW);
   const [isLoading, setIsLoading] = useState(false);
-  const [isReviewsLoading, setIsReviewsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [movie, setMovie] = useState(null);
-  const [reviews, setReviews] = useState(null);
 
   useEffect(() => {
-    setIsLoading(true);
-    dispatch(fetchMovieById(movieId))
-      .then((data) => setMovie(adaptMovieToClient(data.payload)))
-      .catch(() => setIsError(true))
-      .finally(() => setIsLoading(false));
-  }, [movieId]);
-
-  useEffect(() => {
-    if (movieTab === MovieTab.REVIEWS) {
-      setIsReviewsLoading(true);
-      dispatch(fetchReviewsByMovieId(movieId))
-        .then(({data}) => setReviews(data))
+    const foundMovie = movies.find((m) => m.id === Number(movieId));
+    if (foundMovie) {
+      setMovie(foundMovie);
+    } else {
+      setIsLoading(true);
+      dispatch(fetchMovieById(movieId))
+        .then((data) => setMovie(adaptMovieToClient(data.payload)))
         .catch(() => setIsError(true))
-        .finally(() => setIsReviewsLoading(false));
+        .finally(() => setIsLoading(false));
     }
-  }, [movieId, movieTab]);
+  }, [movieId]);
 
   useScrollToTop(params.id);
 
@@ -121,7 +115,7 @@ const FilmPage = ({sameMovies}) => {
             <MovieTabs activeTab={movieTab} onChange={handleMovieTabChange}>
               {movieTab === MovieTab.OVERVIEW && <MovieTabOverview movie={movie} />}
               {movieTab === MovieTab.DETAILS && <MovieTabDetails movie={movie} />}
-              {movieTab === MovieTab.REVIEWS && <MovieTabReviews reviews={reviews} isLoading={isReviewsLoading} />}
+              {movieTab === MovieTab.REVIEWS && <MovieTabReviews />}
             </MovieTabs>
           </div>
         </div>
