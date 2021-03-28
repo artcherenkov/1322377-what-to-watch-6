@@ -36,7 +36,6 @@ const MovieTabReviews = () => {
     if (!reviews) {
       setIsLoading(true);
       dispatch(fetchReviewsByMovieId(movieId))
-        // todo загрузку переместись в редакс, а не в локальный стейт 🔽
         .then(({data}) => setReviews(data))
         .catch(() => setIsError(true))
         .finally(() => setIsLoading(false));
