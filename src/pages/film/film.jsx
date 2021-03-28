@@ -18,7 +18,8 @@ import LoadingSpinner from "../../components/loading-spinner/loading-spinner";
 import propTypes from './film.props';
 import {fetchMovieById} from "../../store/api-actions";
 import {adaptMovieToClient} from "../../core/adapter";
-import {getAuthInfo, getMovies} from "../../store/selectors";
+import {getAuthInfo} from "../../store/selectors";
+import {useMoviesSelector} from "../../hooks/useMoviesSelector/useMoviesSelector";
 
 export const MovieTab = {
   OVERVIEW: `Overview`,
@@ -36,7 +37,7 @@ const FilmPage = ({sameMovies}) => {
   const params = useParams();
   const dispatch = useDispatch();
   const authInfo = useSelector(getAuthInfo, shallowEqual);
-  const movies = useSelector(getMovies, shallowEqual);
+  const movies = useMoviesSelector();
   const movieId = params.id;
 
   const [movieTab, setMovieTab] = useState(MovieTab.OVERVIEW);
