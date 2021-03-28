@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 
-import VideoPlayer from "../video-player/video-player";
+import PreviewPlayer from "../preview-player/preview-player";
 
 import propTypes from './movie-card.props';
 
@@ -33,7 +33,7 @@ const MovieCard = ({film, isActive, handleMovieCardMouseOver, handleMovieCardMou
       onMouseLeave={handleMovieCardMouseLeave}
     >
       <div className="small-movie-card__image">
-        <VideoPlayer shouldVideoPlay={shouldVideoPlay} videoLink={videoLink} posterImage={posterImage} />
+        <PreviewPlayer shouldVideoPlay={shouldVideoPlay} videoLink={videoLink} posterImage={posterImage} />
       </div>
       <h3 className="small-movie-card__title">
         <Link className="small-movie-card__link" to={`/films/${id}`}>{name}</Link>
