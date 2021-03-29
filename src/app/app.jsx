@@ -38,7 +38,7 @@ const App = () => {
           <AddReviewPage movie={movies[0]} />
         </Route>
         <Route exact path="/player/:id">
-          <PlayerPage movie={movies[0]} />
+          <PlayerPage />
         </Route>
         <Route>
           <NotFoundPage />
