@@ -16,7 +16,7 @@ import NotFoundPage from "../not-found-page/not-found-page";
 import LoadingSpinner from "../../components/loading-spinner/loading-spinner";
 
 import propTypes from './film.props';
-import {fetchMovieById} from "../../store/api-actions";
+import {changeMovieIsFavorite, fetchMovieById} from "../../store/api-actions";
 import {adaptMovieToClient} from "../../core/adapter";
 import {getAuthInfo} from "../../store/selectors";
 import {useMoviesSelector} from "../../hooks/useMoviesSelector/useMoviesSelector";
@@ -42,11 +42,13 @@ const FilmPage = ({sameMovies}) => {
 
   const [movieTab, setMovieTab] = useState(MovieTab.OVERVIEW);
   const [isLoading, setIsLoading] = useState(false);
+  const [isFavoriteLoading, setIsFavoriteLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [movie, setMovie] = useState(null);
 
+  const foundMovie = movies.find((m) => m.id === Number(movieId));
+
   useEffect(() => {
-    const foundMovie = movies.find((m) => m.id === Number(movieId));
     if (foundMovie) {
       setMovie(foundMovie);
     } else {
@@ -56,7 +58,7 @@ const FilmPage = ({sameMovies}) => {
         .catch(() => setIsError(true))
         .finally(() => setIsLoading(false));
     }
-  }, [movieId]);
+  }, [movieId, foundMovie]);
 
   useScrollToTop(params.id);
 
@@ -70,6 +72,11 @@ const FilmPage = ({sameMovies}) => {
 
   const {posterImage, name, genre, releaseDate} = movie;
   const handleMovieTabChange = (newTab) => setMovieTab(newTab);
+
+  const handleMovieIsFavoriteChange = () => {
+    setIsFavoriteLoading(true);
+    dispatch(changeMovieIsFavorite(movieId)).then(() => setIsFavoriteLoading(false));
+  };
 
   return (
     <>
@@ -97,9 +104,9 @@ const FilmPage = ({sameMovies}) => {
                   </svg>
                   <span>Play</span>
                 </Link>
-                <button className="btn btn--list movie-card__button" type="button">
+                <button type="button" className="btn btn--list movie-card__button" disabled={isFavoriteLoading} onClick={handleMovieIsFavoriteChange}>
                   <svg viewBox="0 0 19 20" width={19} height={20}>
-                    <use xlinkHref="#add" />
+                    <use xlinkHref={movie.isFavorite ? `#in-list` : `#add`} />
                   </svg>
                   <span>My list</span>
                 </button>
