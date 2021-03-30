@@ -6,14 +6,15 @@ import GenresList from "../../components/genres-list/genres-list";
 import MoviesList from "../../components/movies-list/movies-list";
 import Footer from "../../components/footer/footer";
 
-import {getActiveGenre, getMovies} from "../../store/selectors";
+import {getActiveGenre} from "../../store/selectors";
 
 import ShowMoreButton from "./components/show-more-button/show-more-button";
 import {MOVIES_CARD_COUNT_STEP} from "../../const";
 import {filterMoviesByGenre} from "../../utils/movies";
+import {useMoviesSelector} from "../../hooks/useMoviesSelector/useMoviesSelector";
 
 const MainPage = () => {
-  const movies = useSelector(getMovies, shallowEqual);
+  const movies = useMoviesSelector();
   const activeGenre = useSelector(getActiveGenre, shallowEqual);
 
   const [moviesToShowCount, setMoviesToShowCount] = useState(MOVIES_CARD_COUNT_STEP);

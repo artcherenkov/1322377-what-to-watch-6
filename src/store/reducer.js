@@ -4,6 +4,7 @@ import {adaptMovieToClient, adaptUserInfoToClient} from "../core/adapter";
 
 const initialState = {
   movies: [],
+  favoriteMovies: [],
   activeGenre: Genre.ALL_GENRES,
   authStatus: AuthorizationStatus.NOT_AUTH,
   authInfo: null,
@@ -18,8 +19,18 @@ const appStore = (state = initialState, action) => {
       const movies = action.payload.map((movie) => adaptMovieToClient(movie));
       return {...state, movies};
     }
+    case ActionType.LOAD_FAVORITE_MOVIES: {
+      const movies = action.payload.map((movie) => adaptMovieToClient(movie));
+      return {...state, favoriteMovies: movies};
+    }
     case ActionType.LOAD_MOVIE: {
       const movie = adaptMovieToClient(action.payload);
+      const movies = state.movies.slice();
+      const movieId = movies.findIndex((m) => m.id === movie.id);
+      if (movieId !== -1) {
+        movies[movieId] = movie;
+        return {...state, movies};
+      }
       return {...state, movies: [...state.movies, movie]};
     }
     case ActionType.LOAD_USER: {

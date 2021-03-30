@@ -1,5 +1,4 @@
 import React from 'react';
-import {shallowEqual, useSelector} from "react-redux";
 import {Switch, Route, BrowserRouter} from 'react-router-dom';
 
 import MainPage from "../pages/main/main";
@@ -10,13 +9,13 @@ import AddReviewPage from "../pages/add-review/add-review";
 import PlayerPage from "../pages/player/player";
 import NotFoundPage from "../pages/not-found-page/not-found-page";
 
-import {getMovies} from "../store/selectors";
 import PrivateRoute from "../components/private-route/private-route";
+import {useMoviesSelector} from "../hooks/useMoviesSelector/useMoviesSelector";
 
 const SAME_MOVIES_COUNT = 4;
 
 const App = () => {
-  const movies = useSelector(getMovies, shallowEqual);
+  const movies = useMoviesSelector();
 
   return (
     <BrowserRouter>
@@ -39,7 +38,7 @@ const App = () => {
           <AddReviewPage movie={movies[0]} />
         </Route>
         <Route exact path="/player/:id">
-          <PlayerPage movie={movies[0]} />
+          <PlayerPage />
         </Route>
         <Route>
           <NotFoundPage />
