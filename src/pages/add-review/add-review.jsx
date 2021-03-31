@@ -5,9 +5,15 @@ import UserBlock from "../../components/user-block/user-block";
 import ReviewForm from "../../components/review-form/review-form";
 
 import propTypes from './add-review.props';
+import {useMovieByIdSelector} from "../../hooks/useMovieByIdSelector/useMovieByIdSelector";
+import {Link, useParams} from "react-router-dom";
 
-const AddReviewPage = ({movie}) => {
+const AddReviewPage = () => {
+  const params = useParams();
+  const movieId = params.id;
+  const movie = useMovieByIdSelector(movieId);
   const {posterImage, name} = movie;
+
   return (
     <section className="movie-card movie-card--full">
       <div className="movie-card__header">
@@ -20,7 +26,7 @@ const AddReviewPage = ({movie}) => {
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <a href="movie-page.html" className="breadcrumbs__link">{name}</a>
+                <Link to={`/films/${movieId}`} className="breadcrumbs__link">{name}</Link>
               </li>
               <li className="breadcrumbs__item">
                 <a className="breadcrumbs__link">Add review</a>
