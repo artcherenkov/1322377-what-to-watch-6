@@ -12,13 +12,13 @@ const AddReviewPage = () => {
   const params = useParams();
   const movieId = params.id;
   const movie = useMovieByIdSelector(movieId);
-  const {posterImage, name} = movie;
+  const {posterImage, backgroundImage, name} = movie;
 
   return (
     <section className="movie-card movie-card--full">
       <div className="movie-card__header">
         <div className="movie-card__bg">
-          <img src={posterImage} alt="The Grand Budapest Hotel" />
+          <img src={backgroundImage} alt={name} />
         </div>
         <h1 className="visually-hidden">WTW</h1>
         <header className="page-header">
@@ -36,7 +36,7 @@ const AddReviewPage = () => {
           <UserBlock />
         </header>
         <div className="movie-card__poster movie-card__poster--small">
-          <img src={posterImage} alt="The Grand Budapest Hotel poster" width={218} height={327} />
+          <img src={posterImage} alt={name} width={218} height={327} />
         </div>
       </div>
       <ReviewForm />
