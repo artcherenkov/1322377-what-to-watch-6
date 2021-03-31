@@ -23,10 +23,10 @@ const store = createStore(
     )
 );
 
-store.dispatch(checkAuthStatus());
 
 Promise.all([
   store.dispatch(fetchMoviesList()),
+  store.dispatch(checkAuthStatus())
 ])
   .then(() => {
     ReactDOM.render(

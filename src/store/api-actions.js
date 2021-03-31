@@ -1,14 +1,9 @@
-import {loadMovies, loadMovie, loadUser, loadFavoriteMovies} from "./actions";
+import {loadMovies, loadMovie, loadUser} from "./actions";
 import {APIRoute} from "../const";
 
 export const fetchMoviesList = () => (dispatch, _getState, api) => (
   api.get(APIRoute.MOVIES)
     .then(({data}) => dispatch(loadMovies(data)))
-);
-
-export const fetchFavoriteMoviesList = () => (dispatch, _getState, api) => (
-  api.get(APIRoute.FAVORITE)
-    .then(({data}) => dispatch(loadFavoriteMovies(data)))
 );
 
 export const changeMovieIsFavorite = (id) => (dispatch, getState, api) => {

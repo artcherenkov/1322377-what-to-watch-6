@@ -19,10 +19,6 @@ const appStore = (state = initialState, action) => {
       const movies = action.payload.map((movie) => adaptMovieToClient(movie));
       return {...state, movies};
     }
-    case ActionType.LOAD_FAVORITE_MOVIES: {
-      const movies = action.payload.map((movie) => adaptMovieToClient(movie));
-      return {...state, favoriteMovies: movies};
-    }
     case ActionType.LOAD_MOVIE: {
       const movie = adaptMovieToClient(action.payload);
       const movies = state.movies.slice();
