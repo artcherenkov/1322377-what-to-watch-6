@@ -46,8 +46,6 @@ const FilmPage = ({sameMovies}) => {
   const [isError, setIsError] = useState(false);
   const [movie, setMovie] = useState(null);
 
-  console.log(foundMovie);
-
   useEffect(() => {
     if (foundMovie) {
       setMovie(foundMovie);
@@ -75,7 +73,8 @@ const FilmPage = ({sameMovies}) => {
 
   const handleMovieIsFavoriteChange = () => {
     setIsFavoriteLoading(true);
-    dispatch(changeMovieIsFavorite(movieId)).then(() => setIsFavoriteLoading(false));
+    dispatch(changeMovieIsFavorite(movieId))
+      .finally(() => setIsFavoriteLoading(false));
   };
 
   return (
