@@ -15,11 +15,12 @@ import MovieTabReviews from "../../components/movie-tabs/components/movie-tab-re
 import NotFoundPage from "../not-found-page/not-found-page";
 import LoadingSpinner from "../../components/loading-spinner/loading-spinner";
 
-import propTypes from './film.props';
 import {changeMovieIsFavorite, fetchMovieById} from "../../store/api-actions";
 import {adaptMovieToClient} from "../../core/adapter";
 import {getAuthInfo} from "../../store/selectors";
 import {useMovieByIdSelector} from "../../hooks/useMovieByIdSelector/useMovieByIdSelector";
+import {useMoviesByGenreSelector} from "../../hooks/useMoviesByGenreSelector/useMoviesByGenreSelector";
+import {SAME_MOVIES_COUNT} from "../../const";
 
 export const MovieTab = {
   OVERVIEW: `Overview`,
@@ -33,12 +34,16 @@ function useScrollToTop(...dependencies) {
   }, dependencies);
 }
 
-const FilmPage = ({sameMovies}) => {
+const FilmPage = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const movieId = params.id;
   const foundMovie = useMovieByIdSelector(movieId);
   const authInfo = useSelector(getAuthInfo, shallowEqual);
+
+  const sameMovies = useMoviesByGenreSelector(foundMovie.genre)
+    .filter((m) => m.id !== foundMovie.id)
+    .slice(0, SAME_MOVIES_COUNT);
 
   const [movieTab, setMovieTab] = useState(MovieTab.OVERVIEW);
   const [isLoading, setIsLoading] = useState(false);
@@ -128,16 +133,14 @@ const FilmPage = ({sameMovies}) => {
         </div>
       </section>
       <div className="page-content">
-        <section className="catalog catalog--like-this">
+        {!!sameMovies.length && <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
           <MoviesList movies={sameMovies} />
-        </section>
+        </section>}
         <Footer />
       </div>
     </>
   );
 };
-
-FilmPage.propTypes = propTypes;
 
 export default FilmPage;
