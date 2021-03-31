@@ -1,16 +1,15 @@
 import React from 'react';
 import {Link, useParams} from "react-router-dom";
 
-import {useMoviesSelector} from "../../hooks/useMoviesSelector/useMoviesSelector";
 import NotFoundPage from "../not-found-page/not-found-page";
+import {useMovieByIdSelector} from "../../hooks/useMovieByIdSelector/useMovieByIdSelector";
 import './styles.css';
 
 const PlayerPage = () => {
-  const movies = useMoviesSelector();
   const params = useParams();
 
   const movieId = params.id;
-  const movie = movies.find((m) => m.id === Number(movieId));
+  const movie = useMovieByIdSelector(movieId);
 
   if (!movie) {
     return <NotFoundPage />;

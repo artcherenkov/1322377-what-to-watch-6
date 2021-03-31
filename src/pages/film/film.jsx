@@ -19,7 +19,7 @@ import propTypes from './film.props';
 import {changeMovieIsFavorite, fetchMovieById} from "../../store/api-actions";
 import {adaptMovieToClient} from "../../core/adapter";
 import {getAuthInfo} from "../../store/selectors";
-import {useMoviesSelector} from "../../hooks/useMoviesSelector/useMoviesSelector";
+import {useMovieByIdSelector} from "../../hooks/useMovieByIdSelector/useMovieByIdSelector";
 
 export const MovieTab = {
   OVERVIEW: `Overview`,
@@ -36,9 +36,9 @@ function useScrollToTop(...dependencies) {
 const FilmPage = ({sameMovies}) => {
   const params = useParams();
   const dispatch = useDispatch();
-  const authInfo = useSelector(getAuthInfo, shallowEqual);
-  const movies = useMoviesSelector();
   const movieId = params.id;
+  const foundMovie = useMovieByIdSelector(movieId);
+  const authInfo = useSelector(getAuthInfo, shallowEqual);
 
   const [movieTab, setMovieTab] = useState(MovieTab.OVERVIEW);
   const [isLoading, setIsLoading] = useState(false);
@@ -46,7 +46,7 @@ const FilmPage = ({sameMovies}) => {
   const [isError, setIsError] = useState(false);
   const [movie, setMovie] = useState(null);
 
-  const foundMovie = movies.find((m) => m.id === Number(movieId));
+  console.log(foundMovie);
 
   useEffect(() => {
     if (foundMovie) {
