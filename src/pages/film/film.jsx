@@ -68,7 +68,7 @@ const FilmPage = ({sameMovies}) => {
     return <NotFoundPage />;
   }
 
-  const {posterImage, name, genre, releaseDate} = movie;
+  const {posterImage, backgroundImage, name, genre, releaseDate} = movie;
   const handleMovieTabChange = (newTab) => setMovieTab(newTab);
 
   const handleMovieIsFavoriteChange = () => {
@@ -82,7 +82,7 @@ const FilmPage = ({sameMovies}) => {
       <section className="movie-card movie-card--full">
         <div className="movie-card__hero">
           <div className="movie-card__bg">
-            <img src={posterImage} alt={name} />
+            <img src={backgroundImage} alt={name} />
           </div>
           <h1 className="visually-hidden">WTW</h1>
           <header className="page-header movie-card__head">
