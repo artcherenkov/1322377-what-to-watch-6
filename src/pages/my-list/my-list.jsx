@@ -6,13 +6,13 @@ import UserBlock from "../../components/user-block/user-block";
 import Footer from "../../components/footer/footer";
 
 import propTypes from './my-list.props';
-import {useMoviesSelector} from "../../hooks/useMoviesSelector/useMoviesSelector";
 import {fetchFavoriteMoviesList} from "../../store/api-actions";
 import {useDispatch} from "react-redux";
+import {useFavoritesSelector} from "../../hooks/useFavoritesSelector/useFavoritesSelector";
 
 const MyListPage = () => {
   const dispatch = useDispatch();
-  const movies = useMoviesSelector().filter((movie) => movie.isFavorite);
+  const movies = useFavoritesSelector();
 
   useEffect(() => {
     dispatch(fetchFavoriteMoviesList());
