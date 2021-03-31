@@ -43,6 +43,7 @@ export const FilmMark = {
 
 export const APIRoute = {
   MOVIES: `/films`,
+  PROMO: `/films/promo`,
   FAVORITE: `/favorite`,
   COMMENTS: `/comments`,
   LOGIN: `/login`

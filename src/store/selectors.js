@@ -4,3 +4,4 @@ export const getFavoriteMovies = (state) => state.movies.filter((movie) => movie
 export const getActiveGenre = (state) => state.activeGenre;
 export const getAuthStatus = (state) => state.authStatus;
 export const getAuthInfo = (state) => state.authInfo;
+export const getPromoMovieId = (state) => state.promoMovieId;

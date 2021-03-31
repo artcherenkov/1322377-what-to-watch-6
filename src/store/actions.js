@@ -1,6 +1,7 @@
 export const ActionType = {
   LOAD_MOVIES: `LOAD_MOVIES`,
   LOAD_MOVIE: `LOAD_MOVIE`,
+  LOAD_PROMO_MOVIE_ID: `LOAD_PROMO_MOVIE_ID`,
   CHANGE_GENRE: `CHANGE_GENRE`,
   LOAD_USER: `LOAD_USER`
 };
@@ -17,6 +18,11 @@ export const loadMovies = (payload) => ({
 
 export const loadMovie = (payload) => ({
   type: ActionType.LOAD_MOVIE,
+  payload,
+});
+
+export const loadPromoMovieId = (payload) => ({
+  type: ActionType.LOAD_PROMO_MOVIE_ID,
   payload,
 });
 

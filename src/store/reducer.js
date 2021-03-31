@@ -4,7 +4,7 @@ import {adaptMovieToClient, adaptUserInfoToClient} from "../core/adapter";
 
 const initialState = {
   movies: [],
-  favoriteMovies: [],
+  promoMovieId: null,
   activeGenre: Genre.ALL_GENRES,
   authStatus: AuthorizationStatus.NOT_AUTH,
   authInfo: null,
@@ -18,6 +18,9 @@ const appStore = (state = initialState, action) => {
     case ActionType.LOAD_MOVIES: {
       const movies = action.payload.map((movie) => adaptMovieToClient(movie));
       return {...state, movies};
+    }
+    case ActionType.LOAD_PROMO_MOVIE_ID: {
+      return {...state, promoMovieId: action.payload};
     }
     case ActionType.LOAD_MOVIE: {
       const movie = adaptMovieToClient(action.payload);

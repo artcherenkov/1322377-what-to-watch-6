@@ -1,9 +1,17 @@
-import {loadMovies, loadMovie, loadUser} from "./actions";
+import {loadMovies, loadMovie, loadUser, loadPromoMovieId} from "./actions";
 import {APIRoute} from "../const";
 
 export const fetchMoviesList = () => (dispatch, _getState, api) => (
   api.get(APIRoute.MOVIES)
     .then(({data}) => dispatch(loadMovies(data)))
+);
+
+export const fetchPromoMovie = () => (dispatch, _getState, api) => (
+  api.get(APIRoute.PROMO)
+    .then(({data}) => {
+      dispatch(loadPromoMovieId(data.id));
+      dispatch(loadMovie(data));
+    })
 );
 
 export const changeMovieIsFavorite = (id) => (dispatch, getState, api) => {
