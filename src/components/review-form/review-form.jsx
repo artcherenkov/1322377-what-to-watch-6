@@ -4,7 +4,7 @@ import RatingStar from "./components/rating-star/rating-star";
 import {connect} from "react-redux";
 import {postReview as postReviewAction} from "../../store/api-actions";
 import {adaptReviewToServer} from "../../core/adapter";
-import {useParams} from "react-router-dom";
+import {useParams, useHistory} from "react-router-dom";
 
 import propTypes from './review-form.props';
 
@@ -13,6 +13,7 @@ const MAX_RATING = 10;
 const ReviewForm = (props) => {
   const {postReview} = props;
   const params = useParams();
+  const history = useHistory();
   const movieId = params.id;
 
   const initialFormState = {
@@ -22,6 +23,8 @@ const ReviewForm = (props) => {
 
   const [formState, setFormState] = useState(initialFormState);
   const [isLoading, setIsLoading] = useState(false);
+
+  const isFormValid = formState.reviewText.length >= 50 && formState.reviewText.length < 400;
 
   const onChange = (evt) => {
     const {name, value} = evt.target;
@@ -34,11 +37,12 @@ const ReviewForm = (props) => {
   const onSubmit = (evt) => {
     evt.preventDefault();
     setIsLoading(true);
-    postReview(formState, movieId).then(() => {
-      setIsLoading(false);
-      setFormState(initialFormState);
-      evt.target.reset();
-    });
+    postReview(formState, movieId)
+      .then(() => {
+        setFormState(initialFormState);
+        history.push(`/films/${movieId}`);
+      })
+      .catch(() => setIsLoading(false));
   };
 
   return (
@@ -56,9 +60,18 @@ const ReviewForm = (props) => {
           </div>
         </div>
         <div className="add-review__text">
-          <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" value={formState.reviewText} />
+          <textarea
+            className="add-review__textarea"
+            name="review-text"
+            id="review-text"
+            placeholder="Review text"
+            value={formState.reviewText}
+            onChange={() => {}}
+          />
           <div className="add-review__submit">
-            {isLoading ? <span>Загрузка...</span> : <button className="add-review__btn" type="submit">Post</button>}
+            {isLoading
+              ? <span>Загрузка...</span>
+              : <button className="add-review__btn" type="submit" disabled={!isFormValid}>Post</button>}
           </div>
         </div>
       </form>

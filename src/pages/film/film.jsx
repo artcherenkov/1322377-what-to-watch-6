@@ -15,11 +15,12 @@ import MovieTabReviews from "../../components/movie-tabs/components/movie-tab-re
 import NotFoundPage from "../not-found-page/not-found-page";
 import LoadingSpinner from "../../components/loading-spinner/loading-spinner";
 
-import propTypes from './film.props';
 import {changeMovieIsFavorite, fetchMovieById} from "../../store/api-actions";
 import {adaptMovieToClient} from "../../core/adapter";
 import {getAuthInfo} from "../../store/selectors";
-import {useMoviesSelector} from "../../hooks/useMoviesSelector/useMoviesSelector";
+import {useMovieByIdSelector} from "../../hooks/useMovieByIdSelector/useMovieByIdSelector";
+import {useMoviesByGenreSelector} from "../../hooks/useMoviesByGenreSelector/useMoviesByGenreSelector";
+import {SAME_MOVIES_COUNT} from "../../const";
 
 export const MovieTab = {
   OVERVIEW: `Overview`,
@@ -33,20 +34,22 @@ function useScrollToTop(...dependencies) {
   }, dependencies);
 }
 
-const FilmPage = ({sameMovies}) => {
+const FilmPage = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  const authInfo = useSelector(getAuthInfo, shallowEqual);
-  const movies = useMoviesSelector();
   const movieId = params.id;
+  const foundMovie = useMovieByIdSelector(movieId);
+  const authInfo = useSelector(getAuthInfo, shallowEqual);
+
+  const sameMovies = useMoviesByGenreSelector(foundMovie.genre)
+    .filter((m) => m.id !== foundMovie.id)
+    .slice(0, SAME_MOVIES_COUNT);
 
   const [movieTab, setMovieTab] = useState(MovieTab.OVERVIEW);
   const [isLoading, setIsLoading] = useState(false);
   const [isFavoriteLoading, setIsFavoriteLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [movie, setMovie] = useState(null);
-
-  const foundMovie = movies.find((m) => m.id === Number(movieId));
 
   useEffect(() => {
     if (foundMovie) {
@@ -70,12 +73,13 @@ const FilmPage = ({sameMovies}) => {
     return <NotFoundPage />;
   }
 
-  const {posterImage, name, genre, releaseDate} = movie;
+  const {posterImage, backgroundImage, name, genre, releaseDate} = movie;
   const handleMovieTabChange = (newTab) => setMovieTab(newTab);
 
   const handleMovieIsFavoriteChange = () => {
     setIsFavoriteLoading(true);
-    dispatch(changeMovieIsFavorite(movieId)).then(() => setIsFavoriteLoading(false));
+    dispatch(changeMovieIsFavorite(movieId))
+      .finally(() => setIsFavoriteLoading(false));
   };
 
   return (
@@ -83,7 +87,7 @@ const FilmPage = ({sameMovies}) => {
       <section className="movie-card movie-card--full">
         <div className="movie-card__hero">
           <div className="movie-card__bg">
-            <img src={posterImage} alt={name} />
+            <img src={backgroundImage} alt={name} />
           </div>
           <h1 className="visually-hidden">WTW</h1>
           <header className="page-header movie-card__head">
@@ -129,16 +133,14 @@ const FilmPage = ({sameMovies}) => {
         </div>
       </section>
       <div className="page-content">
-        <section className="catalog catalog--like-this">
+        {!!sameMovies.length && <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
           <MoviesList movies={sameMovies} />
-        </section>
+        </section>}
         <Footer />
       </div>
     </>
   );
 };
-
-FilmPage.propTypes = propTypes;
 
 export default FilmPage;

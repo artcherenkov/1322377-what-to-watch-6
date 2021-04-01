@@ -43,6 +43,7 @@ export const FilmMark = {
 
 export const APIRoute = {
   MOVIES: `/films`,
+  PROMO: `/films/promo`,
   FAVORITE: `/favorite`,
   COMMENTS: `/comments`,
   LOGIN: `/login`
@@ -52,3 +53,5 @@ export const AuthorizationStatus = {
   AUTH: true,
   NOT_AUTH: false,
 };
+
+export const SAME_MOVIES_COUNT = 4;

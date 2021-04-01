@@ -1,5 +1,5 @@
-import React from 'react';
-import {Switch, Route, BrowserRouter} from 'react-router-dom';
+import React from "react";
+import {Switch, Route, BrowserRouter} from "react-router-dom";
 
 import MainPage from "../pages/main/main";
 import SignInPage from "../pages/sign-in/sign-in";
@@ -11,8 +11,6 @@ import NotFoundPage from "../pages/not-found-page/not-found-page";
 
 import PrivateRoute from "../components/private-route/private-route";
 import {useMoviesSelector} from "../hooks/useMoviesSelector/useMoviesSelector";
-
-const SAME_MOVIES_COUNT = 4;
 
 const App = () => {
   const movies = useMoviesSelector();
@@ -32,11 +30,13 @@ const App = () => {
           render={() => <MyListPage movies={movies} />}
         />
         <Route exact path="/films/:id">
-          <FilmPage movies={movies} sameMovies={movies.slice(0, SAME_MOVIES_COUNT)} />
+          <FilmPage />
         </Route>
-        <Route exact path="/films/:id/review">
-          <AddReviewPage movie={movies[0]} />
-        </Route>
+        <PrivateRoute
+          exact
+          path="/films/:id/review"
+          render={() => <AddReviewPage />}
+        />
         <Route exact path="/player/:id">
           <PlayerPage />
         </Route>

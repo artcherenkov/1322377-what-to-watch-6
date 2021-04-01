@@ -10,7 +10,7 @@ import {createAPI} from "./services/api";
 import {appStore} from "./store/reducer";
 
 import App from "./app/app";
-import {fetchMoviesList, checkAuthStatus} from "./store/api-actions";
+import {fetchMoviesList, checkAuthStatus, fetchPromoMovie} from "./store/api-actions";
 
 function onUnauthorized() {}
 
@@ -23,10 +23,11 @@ const store = createStore(
     )
 );
 
-store.dispatch(checkAuthStatus());
 
 Promise.all([
   store.dispatch(fetchMoviesList()),
+  store.dispatch(checkAuthStatus()),
+  store.dispatch(fetchPromoMovie())
 ])
   .then(() => {
     ReactDOM.render(

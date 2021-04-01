@@ -14,7 +14,9 @@ function UserBlock() {
       {authStatus === AuthorizationStatus.AUTH
         ? (
           <div className="user-block__avatar">
-            <img src={authInfo.avatarUrl} alt="User avatar" width={63} height={63} />
+            <Link to="/mylist">
+              <img src={authInfo.avatarUrl} alt="User avatar" width={63} height={63} />
+            </Link>
           </div>
         )
         : <Link className="user-block__link" to="/login">Sign in</Link>}

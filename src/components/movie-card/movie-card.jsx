@@ -6,7 +6,7 @@ import PreviewPlayer from "../preview-player/preview-player";
 import propTypes from './movie-card.props';
 
 const MovieCard = ({film, isActive, handleMovieCardMouseOver, handleMovieCardMouseLeave}) => {
-  const {id, name, posterImage, videoLink} = film;
+  const {id, name, videoLink, previewImage} = film;
   const [shouldVideoPlay, setShouldVideoPlay] = useState(false);
   let timerId;
 
@@ -33,7 +33,7 @@ const MovieCard = ({film, isActive, handleMovieCardMouseOver, handleMovieCardMou
       onMouseLeave={handleMovieCardMouseLeave}
     >
       <div className="small-movie-card__image">
-        <PreviewPlayer shouldVideoPlay={shouldVideoPlay} videoLink={videoLink} posterImage={posterImage} />
+        <PreviewPlayer shouldVideoPlay={shouldVideoPlay} videoLink={videoLink} posterImage={previewImage} />
       </div>
       <h3 className="small-movie-card__title">
         <Link className="small-movie-card__link" to={`/films/${id}`}>{name}</Link>
